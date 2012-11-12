@@ -10,7 +10,8 @@
 
 function syncCommonJS (){
 	var api = new mw.Api();
-	api.post({
+	$( '#firstHeading' ).injectSpinner( 'spinner-sync-common-js' );
+	api.post( {
 		action: 'edit',
 		title: 'User:' + mw.config.get( 'wgUserName' ) + '/common.js',
 		text: '//{ {subst:User:Helder.wiki/Tools.js}}\n{' +
@@ -19,27 +20,29 @@ function syncCommonJS (){
 		minor: true,
 		watchlist: 'nochange',
 		token: mw.user.tokens.get( 'editToken' )
-	})
+	} )
 	.done( function( data ) {
 		if ( data && data.edit && data.edit.result && data.edit.result === 'Success' ) {
 			mw.notify( 'Seu common.js foi editado' );
 		} else {
 			mw.notify( 'Houve um erro ao tentar editar seu common.js' );
 		}
-	});
+	} ).always( function(){
+		$.removeSpinner( 'spinner-sync-common-js' );
+	} );
 }
 
 function addSyncLink (){
-	$(mw.util.addPortletLink(
+	$( mw.util.addPortletLink(
 		'p-cactions',
 		'#',
 		'Sincronizar common.js',
 		'ca-sync-common-js',
 		'Sincronizar o common.js com a versão mais recente dos seus scripts'
-	)).click(function(e){
+	) ).click( function(e){
 		e.preventDefault();
-		mw.loader.using( 'mediawiki.api.edit', syncCommonJS );
-	});
+		mw.loader.using( [ 'mediawiki.api.edit', 'jquery.spinner' ], syncCommonJS );
+	} );
 }
 
 if( /\.js$/.test( mw.config.get( 'wgTitle' ) ) && mw.config.get( 'wgDBname' ) === 'ptwikibooks' ){

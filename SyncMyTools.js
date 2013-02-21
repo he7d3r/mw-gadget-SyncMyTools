@@ -9,11 +9,12 @@
 'use strict';
 
 function syncCommonJS (){
-	var api = new mw.Api();
+	var api = new mw.Api(),
+		commonJsPage = 'User:' + mw.config.get( 'wgUserName' ) + '/common.js';
 	$( '#firstHeading' ).injectSpinner( 'spinner-sync-common-js' );
 	api.post( {
 		action: 'edit',
-		title: 'User:' + mw.config.get( 'wgUserName' ) + '/common.js',
+		title: commonJsPage,
 		text: '//{ {subst:User:Helder.wiki/Tools.js}}\n{' +
 			'{subst:User:Helder.wiki/Tools.js}}',
 		summary: 'Atualização',
@@ -23,7 +24,11 @@ function syncCommonJS (){
 	} )
 	.done( function( data ) {
 		if ( data && data.edit && data.edit.result && data.edit.result === 'Success' ) {
-			mw.notify( 'Seu common.js foi editado' );
+			mw.notify(
+				$( '<p>Seu common.js <a href="' +
+					mw.util.wikiGetlink( commonJsPage ) + '?diff=0' +
+				'">foi editado</a>.</p>' )
+			);
 		} else {
 			mw.notify( 'Houve um erro ao tentar editar seu common.js' );
 		}

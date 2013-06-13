@@ -9,15 +9,14 @@
 'use strict';
 
 function syncCommonJS (){
-	var api = new mw.Api(),
-		commonJsPage = 'User:' + mw.config.get( 'wgUserName' ) + '/common.js';
+	var commonJsPage = 'User:' + mw.config.get( 'wgUserName' ) + '/common.js';
 	$( '#firstHeading' ).injectSpinner( 'spinner-sync-common-js' );
-	api.post( {
+	( new mw.Api() ).post( {
 		action: 'edit',
 		title: commonJsPage,
 		text: '//{ {subst:User:Helder.wiki/Tools.js}}\n{' +
 			'{subst:User:Helder.wiki/Tools.js}}',
-		summary: 'Atualização',
+		summary: 'Atualização a partir de [[User:Helder.wiki/Tools.js|/Tools.js]]',
 		minor: true,
 		watchlist: 'nochange',
 		token: mw.user.tokens.get( 'editToken' )

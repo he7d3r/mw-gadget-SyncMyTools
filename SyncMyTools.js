@@ -9,23 +9,24 @@
 'use strict';
 
 function syncJS (){
-	var JsPage = 'User:' + mw.config.get( 'wgUserName' ) + '/vector.js';
+	var jsPage = 'User:' + mw.config.get( 'wgUserName' ) + '/vector.js',
+		toolsPage = 'User:' + mw.config.get( 'wgUserName' ) + '/Tools.js';
 	$( '#firstHeading' ).injectSpinner( 'spinner-sync-js' );
 	( new mw.Api() ).post( {
 		action: 'edit',
-		title: JsPage,
-		text: '//{ {subst:User:Helder.wiki/Tools.js}}\n{' +
-			'{subst:User:Helder.wiki/Tools.js}}',
-		summary: 'Atualização a partir de [[User:Helder.wiki/Tools.js|/Tools.js]]',
+		title: jsPage,
+		text: '//{ {subst:' + toolsPage + '}}\n{' +
+			'{subst:' + toolsPage + '}}',
+		summary: 'Atualização com {' + '{subst:[[' + toolsPage + ']]}}',
 		minor: true,
 		watchlist: 'nochange',
 		token: mw.user.tokens.get( 'editToken' )
 	} )
 	.done( function( data ) {
-		if ( data && data.edit && data.edit.result && data.edit.result === 'Success' ) {
+		if ( data.edit && data.edit.result && data.edit.result === 'Success' ) {
 			mw.notify(
 				$( '<p>Seu vector.js <a href="' +
-					mw.util.wikiGetlink( JsPage ) + '?diff=0' +
+					mw.util.wikiGetlink( jsPage ) + '?diff=0' +
 				'">foi editado</a>.</p>' )
 			);
 		} else {
@@ -45,7 +46,7 @@ function addSyncLink (){
 		'Sincronizar o vector.js com a versão mais recente dos seus scripts'
 	) ).click( function(e){
 		e.preventDefault();
-		mw.loader.using( [ 'mediawiki.api.edit', 'jquery.spinner' ], syncJS );
+		mw.loader.using( [ 'mediawiki.api.edit', 'jquery.spinner', 'mediawiki.notify' ], syncJS );
 	} );
 }
 

@@ -23,10 +23,11 @@ function syncJS (){
 		token: mw.user.tokens.get( 'editToken' )
 	} )
 	.done( function( data ) {
-		if ( data.edit && data.edit.result && data.edit.result === 'Success' ) {
+		var edit = data.edit;
+		if ( edit && edit.result && edit.result === 'Success' ) {
 			mw.notify(
 				$( '<p>Seu vector.js <a href="' +
-					mw.util.wikiGetlink( jsPage ) + '?diff=0' +
+					mw.util.wikiGetlink( jsPage ) + '?diff=' + ( edit.newrevid || 0 ) +
 				'">foi editado</a>.</p>' )
 			);
 		} else {

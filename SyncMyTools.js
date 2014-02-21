@@ -27,7 +27,7 @@ function syncJS (){
 		if ( edit && edit.result && edit.result === 'Success' ) {
 			mw.notify(
 				$( '<p>Seu vector.js <a href="' +
-					mw.util.wikiGetlink( jsPage ) + '?diff=' + ( edit.newrevid || 0 ) +
+					mw.util.getUrl( jsPage ) + '?diff=' + ( edit.newrevid || 0 ) +
 				'">foi editado</a>.</p>' )
 			);
 		} else {
@@ -45,7 +45,7 @@ function addSyncLink (){
 		'Sincronizar vector.js',
 		'ca-sync-js',
 		'Sincronizar o vector.js com a versão mais recente dos seus scripts'
-	) ).click( function(e){
+	) ).click( function( e ){
 		e.preventDefault();
 		mw.loader.using( [ 'mediawiki.api.edit', 'jquery.spinner', 'mediawiki.notify' ], syncJS );
 	} );

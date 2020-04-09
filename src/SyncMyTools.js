@@ -45,7 +45,7 @@
 			'Sincronizar o vector.js com a versão mais recente dos seus scripts'
 		) ).click( function ( e ) {
 			e.preventDefault();
-			mw.loader.using( [ 'mediawiki.api', 'jquery.spinner', 'mediawiki.notify' ], syncJS );
+			mw.loader.using( [ 'mediawiki.api', 'jquery.spinner' ], syncJS );
 		} );
 	}
 

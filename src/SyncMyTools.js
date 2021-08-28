@@ -18,7 +18,7 @@
 			summary: 'Atualização com {' + '{subst:[[' + toolsPage + ']]}}',
 			minor: true,
 			watchlist: 'nochange',
-			token: mw.user.tokens.get( 'editToken' )
+			token: mw.user.tokens.get( 'csrfToken' )
 		} )
 		.done( function ( data ) {
 			var edit = data.edit;
